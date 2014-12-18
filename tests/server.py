@@ -260,7 +260,7 @@ class FakeSFTPServer(ssh.SFTPServerInterface):
         self.server = server
         files = self.server.files
         # Expand such that omitted, implied folders get added explicitly
-        for folder in missing_folders(files.keys()):
+        for folder in missing_folders(list(files.keys())):
             files[folder] = None
         self.files = files
 

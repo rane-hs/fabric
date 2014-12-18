@@ -478,7 +478,7 @@ class TestFileTransfers(FabricTest):
         """
         with hide('everything'):
             get('tree', self.tmpdir)
-        leaves = filter(lambda x: x[0].startswith('/tree'), FILES.items())
+        leaves = filter(lambda x: x[0].startswith('/tree'), list(FILES.items()))
         for path, contents in leaves:
             eq_contents(self.path(path[1:]), contents)
 
@@ -491,7 +491,7 @@ class TestFileTransfers(FabricTest):
         try:
             with hide('everything'):
                 get('tree')
-            leaves = filter(lambda x: x[0].startswith('/tree'), FILES.items())
+            leaves = filter(lambda x: x[0].startswith('/tree'), list(FILES.items()))
             for path, contents in leaves:
                 path = os.path.join(dirname, path[1:])
                 eq_contents(path, contents)

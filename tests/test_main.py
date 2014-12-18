@@ -586,7 +586,7 @@ def name_to_task(name):
 
 def strings_to_tasks(d):
     ret = {}
-    for key, value in d.iteritems():
+    for key, value in d.items():
         if isMappingType(value):
             val = strings_to_tasks(value)
         else:

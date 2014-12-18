@@ -38,7 +38,7 @@ def unwrap_tasks(module, hide_nontasks=False):
     .. seealso:: `~fabric.tasks.WrappedCallableTask`, `~fabric.decorators.task`
     """
     set_tasks = []
-    for name, obj in vars(module).items():
+    for name, obj in list(vars(module).items()):
         if isinstance(obj, WrappedCallableTask):
             setattr(module, obj.name, obj.wrapped)
             # Handle situation where a task's real name shadows a builtin.

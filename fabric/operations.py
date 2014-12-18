@@ -701,7 +701,7 @@ def _prefix_env_vars(command, local=False):
 
         exports = ' '.join(
             '%s%s="%s"' % (set_cmd, k, v if k == 'PATH' else _shell_escape(v))
-            for k, v in env_vars.iteritems()
+            for k, v in env_vars.items()
         )
         shell_env_str = '%s%s && ' % (exp_cmd, exports)
     else:

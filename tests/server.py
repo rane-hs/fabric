@@ -489,6 +489,6 @@ def server(
                 # Handle subthread exceptions
                 e = worker.exception
                 if e:
-                    raise e[0], e[1], e[2]
+                    raise e[0](e[1]).with_traceback(e[2])
         return inner
     return run_server

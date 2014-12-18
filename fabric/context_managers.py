@@ -34,6 +34,7 @@ Context managers for use with the ``with`` statement.
 """
 
 from contextlib import contextmanager
+import collections
 try:
     from contextlib import nested
     pass
@@ -131,12 +132,12 @@ def _setenv(variables):
     This context manager is used internally by `settings` and is not intended
     to be used directly.
     """
-    if callable(variables):
+    if isinstance(variables, collections.Callable):
         variables = variables()
     clean_revert = variables.pop('clean_revert', False)
     previous = {}
     new = []
-    for key, value in variables.items():
+    for key, value in list(variables.items()):
         if key in state.env:
             previous[key] = state.env[key]
         else:
@@ -146,7 +147,7 @@ def _setenv(variables):
         yield
     finally:
         if clean_revert:
-            for key, value in variables.items():
+            for key, value in list(variables.items()):
                 # If the current env value for this key still matches the
                 # value we set it to beforehand, we are OK to revert it to the
                 # pre-block value.
@@ -546,13 +547,13 @@ def remote_tunnel(remote_port, local_port=None, local_host="localhost",
         try:
             sock.connect((local_host, local_port))
         except Exception as e:
-            print("[%s] rtunnel: cannot connect to %s:%d (from local)" % (env.host_string, local_host, local_port))
+            print(("[%s] rtunnel: cannot connect to %s:%d (from local)" % (env.host_string, local_host, local_port)))
             chan.close()
             return
 
-        print("[%s] rtunnel: opened reverse tunnel: %r -> %r -> %r"\
+        print(("[%s] rtunnel: opened reverse tunnel: %r -> %r -> %r"\
               % (env.host_string, channel.origin_addr,
-                 channel.getpeername(), (local_host, local_port)))
+                 channel.getpeername(), (local_host, local_port))))
 
         th = ThreadHandler('fwd', _forwarder, channel, sock)
         threads.append(th)

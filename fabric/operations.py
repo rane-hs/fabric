@@ -3,7 +3,7 @@
 Functions to be used in fabfiles and other non-core code, such as run()/sudo().
 """
 
-from __future__ import with_statement
+
 
 import os
 import os.path
@@ -31,6 +31,7 @@ from fabric.utils import (
     warn,
     apply_lcwd
 )
+import collections
 
 
 def _shell_escape(string):
@@ -96,8 +97,8 @@ def require(*keys, **kwargs):
         Allow iterable ``provided_by`` values instead of just single values.
     """
     # If all keys exist and are non-empty, we're good, so keep going.
-    missing_keys = filter(lambda x: x not in env or (x in env and
-        isinstance(env[x], (dict, list, tuple, set)) and not env[x]), keys)
+    missing_keys = [x for x in keys if x not in env or (x in env and
+        isinstance(env[x], (dict, list, tuple, set)) and not env[x])]
     if not missing_keys:
         return
     # Pluralization
@@ -212,11 +213,11 @@ def prompt(text, key=None, default='', validate=None):
     value = None
     while value is None:
         # Get input
-        value = raw_input(prompt_str) or default
+        value = input(prompt_str) or default
         # Handle validation
         if validate:
             # Callable
-            if callable(validate):
+            if isinstance(validate, collections.Callable):
                 # Callable validate() must raise an exception if validation
                 # fails.
                 try:
@@ -341,7 +342,7 @@ def put(local_path=None, remote_path=None, use_sudo=False,
 
     # Test whether local_path is a path or a file-like object
     local_is_path = not (hasattr(local_path, 'read') \
-        and callable(local_path.read))
+        and isinstance(local_path.read, collections.Callable))
 
     ftp = SFTP(env.host_string)
 
@@ -526,7 +527,7 @@ def get(remote_path, local_path=None, use_sudo=False, temp_dir=""):
 
     # Test whether local_path is a path or a file-like object
     local_is_path = not (hasattr(local_path, 'write') \
-        and callable(local_path.write))
+        and isinstance(local_path.write, collections.Callable))
 
     # Honor lcd() where it makes sense
     if local_is_path:
@@ -701,7 +702,7 @@ def _prefix_env_vars(command, local=False):
 
         exports = ' '.join(
             '%s%s="%s"' % (set_cmd, k, v if k == 'PATH' else _shell_escape(v))
-            for k, v in env_vars.items()
+            for k, v in list(env_vars.items())
         )
         shell_env_str = '%s%s && ' % (exp_cmd, exports)
     else:

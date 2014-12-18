@@ -47,7 +47,7 @@ def unwrap_tasks(module, hide_nontasks=False):
             set_tasks.append(obj.name)
             # In the same vein, "privately" named wrapped functions whose task
             # name is public, needs to get renamed so autodoc picks it up.
-            obj.wrapped.func_name = obj.name
+            obj.wrapped.__name__ = obj.name
         else:
             if name in set_tasks:
                 continue

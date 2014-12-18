@@ -14,7 +14,7 @@ def isMappingType(obj):
 
 
 def _encode(msg, stream):
-    if isinstance(msg, unicode) and hasattr(stream, 'encoding'):
+    if isinstance(msg, str) and hasattr(stream, 'encoding'):
         return msg.encode(stream.encoding)
     else:
         return str(msg)
@@ -35,7 +35,7 @@ def abort(msg):
     if not env.colorize_errors:
         red  = lambda x: x
     else:
-        from colors import red
+        from .colors import red
 
     if output.aborts:
         sys.stderr.write(red("\nFatal error: %s\n" % _encode(msg, sys.stderr)))
@@ -61,7 +61,7 @@ def warn(msg):
     if not env.colorize_errors:
         magenta = lambda x: x
     else:
-        from colors import magenta
+        from .colors import magenta
 
     if output.warnings:
         msg = _encode(msg, sys.stderr)

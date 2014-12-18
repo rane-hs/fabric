@@ -2,7 +2,7 @@
 Classes and subroutines dealing with network connections and related topics.
 """
 
-from __future__ import with_statement
+
 
 from functools import wraps
 import getpass
@@ -11,7 +11,7 @@ import re
 import time
 import socket
 import sys
-from StringIO import StringIO
+from io import StringIO
 
 
 from fabric.auth import get_password, set_password
@@ -89,7 +89,7 @@ def get_gateway(host, port, cache, replace=False):
         # ensure initial gateway connection
         if replace or gateway not in cache:
             if output.debug:
-                print("Creating new gateway connection to %r" % gateway)
+                print(("Creating new gateway connection to %r" % gateway))
             cache[gateway] = connect(*normalize(gateway) + (cache, False))
         # now we should have an open gw connection and can ask it for a
         # direct-tcpip channel to the real target. (bypass cache's own
@@ -217,13 +217,13 @@ def key_filenames():
     if isinstance(env.key_filename, str) or env.key_filename is None:
         keys = [keys]
     # Strip out any empty strings (such as the default value...meh)
-    keys = filter(bool, keys)
+    keys = list(filter(bool, keys))
     # Honor SSH config
     conf = ssh_config()
     if 'identityfile' in conf:
         # Assume a list here as we require Paramiko 1.10+
         keys.extend(conf['identityfile'])
-    return map(os.path.expanduser, keys)
+    return list(map(os.path.expanduser, keys))
 
 
 def key_from_env(passphrase=None):
@@ -396,7 +396,7 @@ def connect(user, host, port, cache, seek_gateway=True):
         Whether to try setting up a gateway socket for this connection. Used so
         the actual gateway connection can prevent recursion.
     """
-    from state import env, output
+    from .state import env, output
 
     #
     # Initialization
@@ -641,7 +641,7 @@ def needs_host(func):
     def host_prompting_wrapper(*args, **kwargs):
         while not env.get('host_string', False):
             handle_prompt_abort("the target host connection string")
-            host_string = raw_input("No hosts found. Please specify (single)"
+            host_string = input("No hosts found. Please specify (single)"
                                     " host string for connection: ")
             env.update(to_dict(host_string))
         return func(*args, **kwargs)

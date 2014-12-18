@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 
 import sys
 import time
@@ -217,7 +217,7 @@ class OutputLooper(object):
         Iterate through the request prompts dict and return the response and
         original request if we find a match
         """
-        for tup in env.prompts.items():
+        for tup in list(env.prompts.items()):
             if _endswith(self.capture, tup[0]):
                 return tup
         return None, None

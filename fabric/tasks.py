@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 
 from functools import wraps
 import inspect
@@ -12,6 +12,7 @@ from fabric.context_managers import settings
 from fabric.job_queue import JobQueue
 from fabric.task_utils import crawl, merge, parse_kwargs
 from fabric.exceptions import NetworkError
+import collections
 
 if sys.version_info[:2] == (2, 5):
     # Python 2.5 inspect.getargspec returns a tuple
@@ -122,7 +123,7 @@ class Task(object):
         # from the CLI or from module-level code). This will be the empty list
         # if these have not been set -- which is fine, this method should
         # return an empty list if no hosts have been set anywhere.
-        env_vars = map(_get_list(env), "hosts roles exclude_hosts".split())
+        env_vars = list(map(_get_list(env), "hosts roles exclude_hosts".split()))
         env_vars.append(roledefs)
         return merge(*env_vars), env.get('roles', [])
 
@@ -197,10 +198,7 @@ def requires_parallel(task):
 
 
 def _parallel_tasks(commands_to_run):
-    return any(map(
-        lambda x: requires_parallel(crawl(x[0], state.commands)),
-        commands_to_run
-    ))
+    return any([requires_parallel(crawl(x[0], state.commands)) for x in commands_to_run])
 
 
 def _is_network_error_ignored():
@@ -324,7 +322,7 @@ def execute(task, *args, **kwargs):
     my_env = {'clean_revert': True}
     results = {}
     # Obtain task
-    is_callable = callable(task)
+    is_callable = isinstance(task, collections.Callable)
     if not (is_callable or _is_task(task)):
         # Assume string, set env.command to it
         my_env['command'] = task
@@ -407,7 +405,7 @@ def execute(task, *args, **kwargs):
             # This prevents Fabric from continuing on to any other tasks.
             # Otherwise, pull in results from the child run.
             ran_jobs = jobs.run()
-            for name, d in ran_jobs.items():
+            for name, d in list(ran_jobs.items()):
                 if d['exit_code'] != 0:
                     if isinstance(d['results'], NetworkError) and \
                             _is_network_error_ignored():

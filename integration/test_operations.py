@@ -1,6 +1,6 @@
-from __future__ import with_statement
 
-from StringIO import StringIO
+
+from io import StringIO
 import os
 import posixpath
 import shutil

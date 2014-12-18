@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 
 import copy
 from functools import partial
@@ -586,7 +586,7 @@ def name_to_task(name):
 
 def strings_to_tasks(d):
     ret = {}
-    for key, value in d.items():
+    for key, value in list(d.items()):
         if isMappingType(value):
             val = strings_to_tasks(value)
         else:

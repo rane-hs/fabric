@@ -478,13 +478,13 @@ def display_command(name):
     else:
         task_details = get_task_details(command)
     if task_details:
-        print("Displaying detailed information for task '%s':" % name)
+        print(("Displaying detailed information for task '%s':" % name))
         print('')
-        print(indent(task_details, strip=True))
+        print((indent(task_details, strip=True)))
         print('')
     # Or print notice if not
     else:
-        print("No detailed information available for task '%s':" % name)
+        print(("No detailed information available for task '%s':" % name))
     sys.exit(0)
 
 
@@ -581,7 +581,7 @@ def update_output_levels(show, hide):
 
 
 def show_commands(docstring, format, code=0):
-    print("\n".join(list_commands(docstring, format)))
+    print(("\n".join(list_commands(docstring, format))))
     sys.exit(code)
 
 
@@ -633,8 +633,8 @@ def main(fabfile_locations=None):
 
         # Handle version number option
         if options.show_version:
-            print("Fabric %s" % state.env.version)
-            print("Paramiko %s" % ssh.__version__)
+            print(("Fabric %s" % state.env.version))
+            print(("Paramiko %s" % ssh.__version__))
             sys.exit(0)
 
         # Load settings from user settings file, into shared env dict.
@@ -673,7 +673,7 @@ Remember that -f can be used to specify fabfile path, and use -h for help.""")
         # Now that we're settled on a fabfile, inform user.
         if state.output.debug:
             if fabfile:
-                print("Using fabfile '%s'" % fabfile)
+                print(("Using fabfile '%s'" % fabfile))
             else:
                 print("No fabfile loaded -- remainder command only")
 
@@ -731,7 +731,7 @@ Remember that -f can be used to specify fabfile path, and use -h for help.""")
 
         if state.output.debug:
             names = ", ".join(x[0] for x in commands_to_run)
-            print("Commands to run: %s" % names)
+            print(("Commands to run: %s" % names))
 
         # At this point all commands must exist, so execute them in order.
         for name, args, kwargs, arg_hosts, arg_roles, arg_exclude_hosts in commands_to_run:

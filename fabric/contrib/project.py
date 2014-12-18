@@ -145,7 +145,7 @@ def rsync_project(
         cmd = "rsync %s %s:%s %s" % (options, remote_prefix, remote_dir, local_dir)
 
     if output.running:
-        print("[%s] rsync_project: %s" % (env.host_string, cmd))
+        print(("[%s] rsync_project: %s" % (env.host_string, cmd)))
     return local(cmd, capture=capture)
 
 

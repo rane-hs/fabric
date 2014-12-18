@@ -143,11 +143,11 @@ class SFTP(object):
                 local_path = os.path.join(local_path, path_vars['basename'])
 
         if output.running:
-            print("[%s] download: %s <- %s" % (
+            print(("[%s] download: %s <- %s" % (
                 env.host_string,
                 _format_local(local_path, local_is_path),
                 remote_path
-            ))
+            )))
         # Warn about overwrites, but keep going
         if local_is_path and os.path.exists(local_path):
             msg = "Local file %s already exists and is being overwritten."
@@ -239,11 +239,11 @@ class SFTP(object):
             basename = os.path.basename(local_path)
             remote_path = posixpath.join(remote_path, basename)
         if output.running:
-            print("[%s] put: %s -> %s" % (
+            print(("[%s] put: %s -> %s" % (
                 env.host_string,
                 _format_local(local_path, local_is_path),
                 posixpath.join(pre, remote_path)
-            ))
+            )))
         # When using sudo, "bounce" the file through a guaranteed-unique file
         # path in the default remote CWD (which, typically, the login user will
         # have write permissions on) in order to sudo(mv) it later.

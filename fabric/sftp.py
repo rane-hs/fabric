@@ -169,7 +169,7 @@ class SFTP(object):
                 # The user should always own the copied file.
                 sudo('chown %s "%s"' % (env.user, target_path))
                 # Only root and the user has the right to read the file
-                sudo('chmod %o "%s"' % (0400, target_path))
+                sudo('chmod %o "%s"' % (0o400, target_path))
                 remote_path = target_path
 
         try:
@@ -268,11 +268,11 @@ class SFTP(object):
             # Cast to octal integer in case of string
             if isinstance(lmode, str):
                 lmode = int(lmode, 8)
-            lmode = lmode & 07777
+            lmode = lmode & 0o7777
             rmode = rattrs.st_mode
             # Only bitshift if we actually got an rmode
             if rmode is not None:
-                rmode = (rmode & 07777)
+                rmode = (rmode & 0o7777)
             if lmode != rmode:
                 if use_sudo:
                     # Temporarily nuke 'cwd' so sudo() doesn't "cd" its mv

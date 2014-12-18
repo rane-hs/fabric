@@ -37,7 +37,6 @@ from contextlib import contextmanager
 import collections
 try:
     from contextlib import nested
-    pass
 except ImportError:
     nested = None
 import socket

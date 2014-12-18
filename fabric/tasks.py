@@ -6,13 +6,16 @@ import sys
 import textwrap
 
 from fabric import state
-from fabric.utils import abort, warn, error
+from fabric.utils import abort, warn, error, py33
 from fabric.network import to_dict, normalize_to_string, disconnect_all
 from fabric.context_managers import settings
 from fabric.job_queue import JobQueue
 from fabric.task_utils import crawl, merge, parse_kwargs
 from fabric.exceptions import NetworkError
 import collections
+
+if py33:
+    from contextlib import ExitStack
 
 if sys.version_info[:2] == (2, 5):
     # Python 2.5 inspect.getargspec returns a tuple
@@ -268,8 +271,13 @@ def _execute(task, host, my_env, args, kwargs, jobs, queue, multiprocessing):
         jobs.append(p)
     # Handle serial execution
     else:
-        with settings(**local_env):
-            return task.run(*args, **kwargs)
+        if py33:
+            with ExitStack() as stack:
+                for s in settings(**local_env):
+                    return stack.enter_context(task.run(*args, **kwargs))
+        else:
+            with settings(**local_env):
+                return task.run(*args, **kwargs)
 
 def _is_task(task):
     return isinstance(task, Task)
@@ -418,8 +426,14 @@ def execute(task, *args, **kwargs):
 
     # Or just run once for local-only
     else:
-        with settings(**my_env):
-            results['<local-only>'] = task.run(*args, **new_kwargs)
+        if py33:
+            with ExitStack() as stack:
+                for s in settings(**my_env):
+                    results['<local-only>'] = stack.enter_context(task.run(*args, **kwargs))
+        else:
+            with settings(**my_env):
+                results['<local-only>'] = task.run(*args, **new_kwargs)
+
     # Return what we can from the inner task executions
 
     return results

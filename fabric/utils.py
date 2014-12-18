@@ -9,6 +9,9 @@ import textwrap
 from traceback import format_exc
 
 
+py33 = sys.version_info >= (3, 3)
+
+
 def isMappingType(obj):
     return isinstance(obj, collections.Mapping)
 

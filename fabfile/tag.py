@@ -1,6 +1,9 @@
 
-
-from contextlib import nested
+try:
+    from contextlib import nested
+except ImportError:
+    nested = None
+    from contextlib import ExitStack
 
 from fabric.api import abort, hide, local, settings, task
 
@@ -13,9 +16,14 @@ from .utils import msg
 
 
 def _seek_version(cmd, txt):
-    with nested(hide('running'), msg(txt)):
-        cmd = cmd % _version('short')
-        return local(cmd, capture=True)
+    if nested:
+        with nested(hide('running'), msg(txt)):
+            cmd = cmd % _version('short')
+            return local(cmd, capture=True)
+    else:
+        with ExitStack() as stack:
+            stack.enter_context(hide('running'))
+            stack.enter_context(msg(txt))
 
 
 def current_version_is_tagged():

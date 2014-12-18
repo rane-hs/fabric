@@ -532,7 +532,9 @@ def remote_tunnel(remote_port, local_port=None, local_host="localhost",
     channels = []
     threads = []
 
-    def accept(channel, (src_addr, src_port), (dest_addr, dest_port)):
+    def accept(channel, src_tuple, dest_tuple):
+        (src_addr, src_port) = src_tuple
+        (dest_addr, dest_port) = dest_tuple
         channels.append(channel)
         sock = socket.socket()
         sockets.append(sock)

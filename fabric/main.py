@@ -389,7 +389,7 @@ def _print_docstring(docstrings, name):
     if not docstrings:
         return False
     docstring = crawl(name, state.commands).__doc__
-    if isinstance(docstring, basestring):
+    if isinstance(docstring, str):
         return docstring
 
 
@@ -622,7 +622,7 @@ def main(fabfile_locations=None):
         # Handle --hosts, --roles, --exclude-hosts (comma separated string =>
         # list)
         for key in ['hosts', 'roles', 'exclude_hosts']:
-            if key in state.env and isinstance(state.env[key], basestring):
+            if key in state.env and isinstance(state.env[key], str):
                 state.env[key] = state.env[key].split(',')
 
         # Feed the env.tasks : tasks that are asked to be executed.

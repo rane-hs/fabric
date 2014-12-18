@@ -274,7 +274,8 @@ def _execute(task, host, my_env, args, kwargs, jobs, queue, multiprocessing):
         if py33:
             with ExitStack() as stack:
                 for s in settings(**local_env):
-                    return stack.enter_context(task.run(*args, **kwargs))
+                    stack.enter_context(s)
+                    return task.run(*args, **kwargs)
         else:
             with settings(**local_env):
                 return task.run(*args, **kwargs)
@@ -429,7 +430,8 @@ def execute(task, *args, **kwargs):
         if py33:
             with ExitStack() as stack:
                 for s in settings(**my_env):
-                    results['<local-only>'] = stack.enter_context(task.run(*args, **kwargs))
+                    stack.enter_context(s)
+                    results['<local-only>'] = task.run(*args, **new_kwargs)
         else:
             with settings(**my_env):
                 results['<local-only>'] = task.run(*args, **new_kwargs)

@@ -9,7 +9,6 @@ The other callables defined in this module are internal only. Anything useful
 to individuals leveraging Fabric as a library, should be kept elsewhere.
 """
 import getpass
-from operator import isMappingType
 from optparse import OptionParser
 import os
 import sys
@@ -23,7 +22,7 @@ from fabric.network import disconnect_all, ssh
 from fabric.state import env_options
 from fabric.tasks import Task, execute, get_task_details
 from fabric.task_utils import _Dict, crawl
-from fabric.utils import abort, indent, warn, _pty_size
+from fabric.utils import abort, indent, warn, _pty_size, isMappingType
 
 
 # One-time calculation of "all internal callables" to avoid doing this on every

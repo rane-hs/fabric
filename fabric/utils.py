@@ -2,10 +2,15 @@
 Internal subroutines for e.g. aborting execution with an error message,
 or performing indenting on multiline output.
 """
+import collections
 import os
 import sys
 import textwrap
 from traceback import format_exc
+
+
+def isMappingType(obj):
+    return isinstance(obj, collections.Mapping)
 
 
 def _encode(msg, stream):

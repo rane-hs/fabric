@@ -33,8 +33,12 @@ Context managers for use with the ``with`` statement.
     ``nested`` itself -- see its API doc for details.
 """
 
-from contextlib import contextmanager, nested
-import sys
+from contextlib import contextmanager
+try:
+    from contextlib import nested
+    pass
+except ImportError:
+    nested = None
 import socket
 import select
 
@@ -240,7 +244,7 @@ def settings(*args, **kwargs):
     managers = list(args)
     if kwargs:
         managers.append(_setenv(kwargs))
-    return nested(*managers)
+    return nested(*managers) if nested else managers
 
 
 def cd(path):

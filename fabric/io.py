@@ -25,7 +25,7 @@ def _endswith(char_list, substring):
 
 
 def _has_newline(bytelist):
-    return '\r' in bytelist or '\n' in bytelist
+    return '\r' in str(bytelist) or '\n' in str(bytelist)
 
 
 def output_loop(*args, **kwargs):
@@ -50,6 +50,8 @@ class OutputLooper(object):
         self.write_buffer = RingBuffer([], maxlen=len(self.prefix))
 
     def _flush(self, text):
+        if isinstance(text, bytes):
+            text = text.decode('ascii')
         self.stream.write(text)
         # Actually only flush if not in linewise mode.
         # When linewise is set (e.g. in parallel mode) flushing makes
@@ -91,7 +93,7 @@ class OutputLooper(object):
                     raise CommandTimeout(timeout=self.timeout)
                 continue
             # Empty byte == EOS
-            if bytelist == '':
+            if len(bytelist) == 0:
                 # If linewise, ensure we flush any leftovers in the buffer.
                 if self.linewise and line:
                     self._flush(self.prefix)
@@ -146,7 +148,7 @@ class OutputLooper(object):
                         self._flush(printable_bytes)
 
                 # Now we have handled printing, handle interactivity
-                read_lines = re.split(r"(\r|\n|\r\n)", bytelist)
+                read_lines = re.split(r"(\r|\n|\r\n)", bytelist.decode())
                 for fragment in read_lines:
                     # Store in capture buffer
                     self.capture += fragment

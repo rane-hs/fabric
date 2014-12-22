@@ -1,4 +1,4 @@
-Fabric is a Python (2.5-2.7) library and command-line tool for
+Fabric is a Python (2.7,3.3,3.4) library and command-line tool for
 streamlining the use of SSH for application deployment or systems
 administration tasks.
 

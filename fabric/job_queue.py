@@ -4,8 +4,8 @@ Sliding-window-based job/task queue class (& example of use.)
 May use ``multiprocessing.Process`` or ``threading.Thread`` objects as queue
 items, though within Fabric itself only ``Process`` objects are used/supported.
 """
-from __future__ import with_statement
 
+from __future__ import with_statement
 import time
 import queue
 

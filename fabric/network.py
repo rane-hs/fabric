@@ -1,8 +1,8 @@
 """
 Classes and subroutines dealing with network connections and related topics.
 """
-from __future__ import with_statement
 
+from __future__ import with_statement
 
 from functools import wraps
 import getpass

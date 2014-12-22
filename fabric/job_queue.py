@@ -7,7 +7,11 @@ items, though within Fabric itself only ``Process`` objects are used/supported.
 
 from __future__ import with_statement
 import time
-import queue
+from fabric.utils import py3k
+if py3k:
+    import queue
+else:
+    import Queue as queue
 
 from fabric.state import env
 from fabric.network import ssh

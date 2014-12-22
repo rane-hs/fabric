@@ -11,8 +11,12 @@ import re
 import time
 import socket
 import sys
-from io import StringIO
 
+from fabric.utils import py3k
+if py3k:
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 from fabric.auth import get_password, set_password
 from fabric.utils import abort, handle_prompt_abort, warn

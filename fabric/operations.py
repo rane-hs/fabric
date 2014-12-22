@@ -2,7 +2,7 @@
 
 Functions to be used in fabfiles and other non-core code, such as run()/sudo().
 """
-
+from __future__ import with_statement
 
 
 import os

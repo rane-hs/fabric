@@ -1,8 +1,7 @@
 """
 Fabric's own fabfile.
 """
-
-
+from __future__ import with_statement
 
 import nose
 

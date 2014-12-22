@@ -1,4 +1,4 @@
-
+from __future__ import with_statement
 try:
     from contextlib import nested
 except ImportError:

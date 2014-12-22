@@ -1,7 +1,7 @@
 """
 Module providing easy API for working with remote files and folders.
 """
-
+from __future__ import with_statement
 
 
 import hashlib

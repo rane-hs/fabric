@@ -2,6 +2,13 @@
 Changelog
 =========
 
+* :bug:`1305` (also :issue:`1313`) Fix a couple minor issues with the operation
+  of & demo code for the ``JobQueue`` class. Thanks to ``@dioh`` and Horst
+  Gutmann for the report & Cameron Lane for the patch.
+* :bug:`980` (also :issue:`1312`) Redirect output of ``cd`` to ``/dev/null`` so
+  users enabling bash's ``CDPATH`` (or similar features in other shells) don't
+  have polluted output captures. Thanks to Alex North-Keys for the original
+  report & Steve Ivy for the fix.
 * :bug:`1289` Fix "NameError: free variable referenced before assignment in
   enclosing scope". Thanks to ``@SamuelMarks`` for catch & patch.
 * :bug:`1286` (also :issue:`971`, :issue:`1032`) Recursively unwrap decorators

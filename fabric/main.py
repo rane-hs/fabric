@@ -10,7 +10,6 @@ to individuals leveraging Fabric as a library, should be kept elsewhere.
 """
 import getpass
 import inspect
-from operator import isMappingType
 from optparse import OptionParser
 import os
 import sys

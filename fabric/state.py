@@ -46,8 +46,8 @@ def _get_system_username():
     except ImportError:
         if win32:
             import win32api
-            import win32security
-            import win32profile
+            import win32security # noqa
+            import win32profile # noqa
             username = win32api.GetUserName()
     return username
 
@@ -235,6 +235,11 @@ env_options = [
         help="reject unknown hosts"
     ),
 
+    make_option('--sudo-password',
+        default=None,
+        help="password for use with sudo only",
+    ),
+
     make_option('--system-known-hosts',
         default=None,
         help="load system known_hosts file before reading user known_hosts"
@@ -362,6 +367,7 @@ env = _AttributeDict({
     'skip_bad_hosts': False,
     'skip_unknown_tasks': False,
     'ssh_config_path': default_ssh_config_path,
+    'sudo_passwords': {},
     'ok_ret_codes': [0],     # a list of return codes that indicate success
     # -S so sudo accepts passwd via stdin, -p with our known-value prompt for
     # later detection (thus %s -- gets filled with env.sudo_prompt at runtime)

@@ -2,11 +2,39 @@
 Changelog
 =========
 
+* :bug:`1470` When using `~fabric.operations.get` with glob expressions, a lack
+  of matches for the glob would result in an empty file named after the glob
+  expression (in addition to raising an error). This has been fixed so the
+  empty file is no longer generated. Thanks to Georgy Kibardin for the catch &
+  initial patch.
+* :feature:`1495` Update the internals of `~fabric.contrib.files` so its
+  members work with SSH servers running on Windows. Thanks to Hamdi Sahloul for
+  the patch.
+* :support:`1483 backported` (also re: :issue:`1386`, :issue:`1374`,
+  :issue:`1300`) Add :ref:`an FAQ <faq-csh>` about quote problems in remote
+  ``csh`` causing issues with Fabric's shell-wrapping and quote-escaping.
+  Thanks to Michael Radziej for the update.
+* :support:`1379 backported` (also :issue:`1464`) Clean up a lot of unused
+  imports and similar cruft (many found via ``flake8 --select E4``). Thanks to
+  Mathias Ertl for the original patches.
+* :bug:`1458` Detect ``known_hosts``-related instances of
+  ``paramiko.SSHException`` and prevent them from being handled like
+  authentication errors (which is the default behavior). This fixes
+  issues with incorrect password prompts or prompt-related exceptions when
+  using ``reject_unknown_hosts`` and encountering missing or bad
+  ``known_hosts`` entries. Thanks to Lukáš Doktor for catch & patch.
+* :release:`1.12.0 <2016-07-25>`
+* :release:`1.11.2 <2016-07-25>`
+* :release:`1.10.4 <2016-07-25>`
+* :feature:`1491` Implement ``sudo``-specific password caching (:ref:`docs
+  <sudo-passwords>`). This can be used to work around issues where over-eager
+  submission of ``env.password`` at login time causes authentication problems
+  (e.g. during two-factor auth).
 * :bug:`1447` Fix a relative import in ``fabric.network`` to be
   correctly/consistently absolute instead. Thanks to ``@bildzeitung`` for catch
   & patch.
 * :release:`1.11.1 <2016-04-09>`
-* :bug:`-` Bumped version to ``1.11.1`` due to apparently accidentally
+* :bug:`- (==1.11)` Bumped version to ``1.11.1`` due to apparently accidentally
   uploading a false ``1.11.0`` to PyPI sometime in the past (PyPI is secure &
   prevents reusing deleted filenames.) We have no memory of this, but databases
   don't lie!

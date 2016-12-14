@@ -2,6 +2,26 @@
 Changelog
 =========
 
+* :bug:`1514` Compatibility with Python 2.5 was broken by using the ``format()``
+  method of a string (only in 1.11+). Report by ``@pedrudehuere``.
+* :release:`1.13.1 <2016-12-09>`
+* :bug:`1462` Make a PyCrypto-specific import and method call optional to avoid
+  ``ImportError`` problems under Paramiko 2.x. Thanks to Alex Gaynor for catch
+  & patch!
+* :release:`1.13.0 <2016-12-09>`
+* :support:`1461` Update setup requirements to allow Paramiko 2.x, now that
+  it's stable and been out in the wild for some time. Paramiko 1.x still works
+  like it always did; the only change to Paramiko 2 was the backend moving from
+  PyCrypto to Cryptography.
+
+  .. warning::
+    If you are upgrading an existing environment, the install dependencies have
+    changed; please see Paramiko's installation docs for details:
+    http://www.paramiko.org/installing.html
+
+* :release:`1.12.1 <2016-12-05>`
+* :release:`1.11.3 <2016-12-05>`
+* :release:`1.10.5 <2016-12-05>`
 * :bug:`1470` When using `~fabric.operations.get` with glob expressions, a lack
   of matches for the glob would result in an empty file named after the glob
   expression (in addition to raising an error). This has been fixed so the

@@ -3,7 +3,6 @@ from __future__ import with_statement
 from contextlib import contextmanager
 from fudge.patcher import with_patched_object
 from functools import partial
-from types import StringTypes
 import copy
 import getpass
 import os
@@ -18,6 +17,11 @@ from nose.tools import raises
 from fabric.state import env, output
 from fabric.sftp import SFTP
 from fabric.network import to_dict
+from fabric.utils import py3k
+if py3k:
+    StringTypes = str
+else:
+    from types import StringTypes
 
 from server import PORT, PASSWORDS, USER, HOST
 from mock_streams import mock_streams

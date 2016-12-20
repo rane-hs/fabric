@@ -13,6 +13,7 @@ from fabric.operations import _sudo_prefix
 from fabric.api import env, hide
 from fabric.thread_handling import ThreadHandler
 from fabric.network import disconnect_all, ssh
+from fabric.utils import py3k
 
 from fake_filesystem import FakeFilesystem, FakeFile
 
@@ -395,7 +396,10 @@ def serve_responses(responses, files, passwords, home, pubkeys, port):
 
         def split_sudo_prompt(self):
             prefix = re.escape(_sudo_prefix(None, None).rstrip()) + ' +'
-            result = re.findall(r'^(%s)?(.*)$' % prefix, self.command)[0]
+            if py3k:
+                result = re.findall(r'^(%s)?(.*)$' % prefix, self.command.decode())[0]
+            else:
+                result = re.findall(r'^(%s)?(.*)$' % prefix, self.command)[0]
             self.sudo_prompt, self.command = result
 
         def response(self):

@@ -1,7 +1,11 @@
 import os
 import stat
 from io import StringIO
-from types import StringTypes
+from fabric.utils import py3k
+if py3k:
+    StringTypes = str
+else:
+    from types import StringTypes
 
 from fabric.network import ssh
 
@@ -9,7 +13,10 @@ from fabric.network import ssh
 class FakeFile(StringIO):
 
     def __init__(self, value=None, path=None):
-        init = lambda x: StringIO.__init__(self, x)
+        if py3k:
+            init = lambda x: StringIO.__init__(self, x)
+        else:
+            init = lambda x: StringIO.__init__(self, unicode(x) if x else None)
         if value is None:
             init("")
             ftype = 'dir'
